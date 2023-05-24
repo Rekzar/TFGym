@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun MainScreen(
@@ -63,6 +65,28 @@ fun MainScreen(
             }
         }
 }
+
+@Preview
+@Composable
+fun MainScreenPreview() {
+    val mainNav: MainNav = object : MainNav {
+        override fun navRutinas() {
+            // Implementación de la función navRutinas() para la vista previa
+        }
+
+        override fun navNutricion() {
+            // Implementación de la función navNutricion() para la vista previa
+        }
+
+        override fun navCalendario() {
+            // Implementación de la función navCalendario() para la vista previa
+        }
+    }
+
+    MainScreen(mainNav = mainNav)
+}
+
+
 
 
 

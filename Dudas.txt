@@ -1,0 +1,4 @@
+Como creo las preview de las pantallas
+Navegación correcta?
+Debería dejar solo la activity MainActivity (ahora mismo es LoginActivity) e implementar en ella todas las interfaces y sus métodos? 
+O crear clases (no activities) para implementar las funciones de pantallas y así poder meterles context?

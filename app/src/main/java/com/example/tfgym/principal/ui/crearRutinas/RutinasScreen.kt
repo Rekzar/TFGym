@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun RutinasScreen( creacionRutinas: crearRutinas) {
+fun RutinasScreen(creacionRutinas: crearRutinas) {
     // Lista de rutinas
     val rutinasList = remember { mutableStateListOf<String>() }
 
