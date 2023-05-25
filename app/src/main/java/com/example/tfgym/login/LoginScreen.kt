@@ -1,11 +1,14 @@
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tfgym.R
 import com.example.tfgym.login.LoginActions
@@ -13,13 +16,18 @@ import com.example.tfgym.login.LoginActions
 
 @Composable
 fun LoginScreen(
-    onLoginSuccessful: () -> Unit,
-    loginActions: LoginActions
+    loginActions: LoginActions?
 ) {
     // Variables para almacenar el correo electrónico y la contraseña del usuario
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var hidden by remember { mutableStateOf(true) }
+    val context = LocalContext.current
+
+    // Acción que se realizará después de que el inicio de sesión sea exitoso
+    val onLoginSuccessful = {
+        Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
+    }
 
     Scaffold(
         topBar = {
@@ -64,7 +72,7 @@ fun LoginScreen(
 
                 // Botón de inicio de sesión con correo electrónico y contraseña
                 Button(
-                    onClick = { loginActions.signInWithEmailAndPassword(email, password, onLoginSuccessful) },
+                    onClick = { loginActions?.signInWithEmailAndPassword(email, password, onLoginSuccessful) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
@@ -81,7 +89,7 @@ fun LoginScreen(
                 )
 
                 // Botón de inicio de sesión con Google
-                Button(onClick = { loginActions.signInWithGoogle()},
+                Button(onClick = { loginActions?.signInWithGoogle()},
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)) {
@@ -97,7 +105,7 @@ fun LoginScreen(
                 )
                 TextButton(
                     onClick = {
-                        loginActions.navRegister()
+                        loginActions?.navRegister()
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
@@ -106,6 +114,12 @@ fun LoginScreen(
             }
         }
     )
+}
+
+@Preview
+@Composable
+fun LoginScreenPreview(){
+    LoginScreen(null)
 }
 
 

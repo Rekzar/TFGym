@@ -15,8 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+
 
 class LoginActivity : AppCompatActivity(), LoginActions {
     private val auth = Firebase.auth
@@ -24,8 +23,6 @@ class LoginActivity : AppCompatActivity(), LoginActions {
 
     //Variable para almacenar el estado de autenticación del usuario
     private val _isLoggedIn = MutableStateFlow(false)
-    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +38,7 @@ class LoginActivity : AppCompatActivity(), LoginActions {
                 startActivity(intent)
             } else {
                 // Si el usuario aún no ha iniciado sesión, mostramos la pantalla de inicio de sesión
-                LoginScreen(loginActions = this, onLoginSuccessful = {
-                    // Acción que se realizará después de que el inicio de sesión sea exitoso
-                    Toast.makeText(this@LoginActivity, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                })
+                LoginScreen(loginActions = this)
             }
         }
     }
@@ -62,18 +56,20 @@ class LoginActivity : AppCompatActivity(), LoginActions {
 
     //Función que se encarga de iniciar sesión con un email y una contraseña propios
     override fun signInWithEmailAndPassword(email: String, password: String, onLoginSuccessful: () -> Unit) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // El inicio de sesión fue exitoso, llama a la función de callback
-                    onLoginSuccessful()
-                    val intent = Intent(this, PrincipalActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    // El inicio de sesión falló, maneja el error aquí
-                    Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+        if(email.isNotEmpty() && password.isNotEmpty()){
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // El inicio de sesión fue exitoso, llama a la función de callback
+                        onLoginSuccessful()
+                        val intent = Intent(this, PrincipalActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        // El inicio de sesión falló, maneja el error aquí
+                        Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
+        }
     }
 
     override fun navRegister() {

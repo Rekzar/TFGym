@@ -15,11 +15,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun MainScreen(
-    mainNav: MainNav
+    mainNav: MainNav?
 ) {
     Column {
         Text(
@@ -30,7 +29,7 @@ fun MainScreen(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .clickable { mainNav.navRutinas() }
+                    .clickable { mainNav?.navRutinas() }
                     .background(Blue)
             ) {
                 Text(
@@ -42,7 +41,7 @@ fun MainScreen(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .clickable { mainNav.navNutricion() }
+                    .clickable { mainNav?.navNutricion() }
                     .background(Yellow)
             ) {
                 Text(
@@ -54,7 +53,7 @@ fun MainScreen(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .clickable { mainNav.navCalendario() }
+                    .clickable { mainNav?.navCalendario() }
                     .background(Red)
             ) {
                 Text(
@@ -69,21 +68,7 @@ fun MainScreen(
 @Preview
 @Composable
 fun MainScreenPreview() {
-    val mainNav: MainNav = object : MainNav {
-        override fun navRutinas() {
-            // Implementación de la función navRutinas() para la vista previa
-        }
-
-        override fun navNutricion() {
-            // Implementación de la función navNutricion() para la vista previa
-        }
-
-        override fun navCalendario() {
-            // Implementación de la función navCalendario() para la vista previa
-        }
-    }
-
-    MainScreen(mainNav = mainNav)
+    MainScreen(mainNav = null)
 }
 
 

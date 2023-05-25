@@ -10,11 +10,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tfgym.registro.RegisterActions
 
 @Composable
-fun RegisterScreen(registerActions: RegisterActions) {
+fun RegisterScreen(registerActions: RegisterActions?) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,16 +56,19 @@ fun RegisterScreen(registerActions: RegisterActions) {
 
         Button(
             onClick = {
-                registerActions.registerUser(email, password, confirmPassword)
-                registerActions.navToMain()
+                registerActions?.registerUser(email, password, confirmPassword)
                   },
             modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("Registrar Usuario")
         }
     }
+}
 
-
+@Preview
+@Composable
+fun RegisterScreenPreview(){
+    RegisterScreen(null)
 }
 
 

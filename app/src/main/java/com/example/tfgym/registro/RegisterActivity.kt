@@ -10,7 +10,7 @@ import com.example.tfgym.R
 import com.example.tfgym.principal.ui.PrincipalActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-
+import com.google.firebase.database.FirebaseDatabase
 
 
 class RegisterActivity : ComponentActivity(), RegisterActions {
@@ -38,6 +38,8 @@ class RegisterActivity : ComponentActivity(), RegisterActions {
         }
         else{ // Registrar al usuario en Firebase Authentication
             mAuth = FirebaseAuth.getInstance()
+            database = FirebaseDatabase.getInstance().getReference()
+
             mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) { // El usuario ha sido registrado exitosamente
@@ -54,6 +56,7 @@ class RegisterActivity : ComponentActivity(), RegisterActions {
                                 Toast.makeText(this, "No se pudieron crear los datos correctamente en la base de datos", Toast.LENGTH_SHORT).show()
                             }
                         }
+                        navToMain()
                     } else {
                         // Se ha producido un error al registrar al usuario
                         Toast.makeText(this, "No se pudo registrar este usuario", Toast.LENGTH_SHORT).show()

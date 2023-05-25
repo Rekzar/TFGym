@@ -14,11 +14,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun RutinasScreen(creacionRutinas: crearRutinas) {
+fun RutinasScreen(creacionRutinas: crearRutinas?) {
     // Lista de rutinas
     val rutinasList = remember { mutableStateListOf<String>() }
 
@@ -30,7 +31,7 @@ fun RutinasScreen(creacionRutinas: crearRutinas) {
             // Botón flotante para crear una nueva rutina
             FloatingActionButton(
                 onClick = {
-                    creacionRutinas.crearRutina()
+                    creacionRutinas?.crearRutina()
                 },
                 content = { Icon(Icons.Filled.Add, contentDescription = "Crear nueva rutina") }
             )
@@ -64,4 +65,10 @@ fun RutinasScreen(creacionRutinas: crearRutinas) {
             item { Spacer(modifier = Modifier.height(16.dp)) }
         }
     }
+}
+
+@Preview
+@Composable
+fun RutinasScreenPreview(){
+    RutinasScreen(creacionRutinas = null)
 }
