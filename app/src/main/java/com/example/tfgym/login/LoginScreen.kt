@@ -32,13 +32,14 @@ fun LoginScreen(
     Scaffold(
         topBar = {
             // Espacio vacío en la parte superior para dejar espacio para el icono de la aplicación
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(64.dp))
         },
         content = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.Center
             ) {
                 // Campo de correo electrónico
                 OutlinedTextField(

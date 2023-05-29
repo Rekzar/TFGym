@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RutinasScreen(creacionRutinas: crearRutinas?) {
     // Lista de rutinas
-    val rutinasList = remember { mutableStateListOf<String>() }
+    val rutinasList = remember { mutableStateListOf<Rutina?>() }
 
     // Variable para almacenar el nombre de la nueva rutina
     var nuevaRutina by remember { mutableStateOf("") }
@@ -31,7 +31,8 @@ fun RutinasScreen(creacionRutinas: crearRutinas?) {
             // Botón flotante para crear una nueva rutina
             FloatingActionButton(
                 onClick = {
-                    creacionRutinas?.crearRutina()
+                    val rutina = creacionRutinas?.crearRutina()
+                    rutinasList.add(rutina)
                 },
                 content = { Icon(Icons.Filled.Add, contentDescription = "Crear nueva rutina") }
             )

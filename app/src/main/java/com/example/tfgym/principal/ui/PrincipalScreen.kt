@@ -14,7 +14,9 @@ import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.tfgym.ui.theme.Purple700
 
 @Composable
 fun MainScreen(
@@ -23,18 +25,21 @@ fun MainScreen(
     Column {
         Text(
             text = "MainScreen",
-            modifier = Modifier.fillMaxWidth(),
-            style = TextStyle(fontSize = 24.sp)
+            modifier = Modifier.fillMaxWidth().background(Purple700),
+            style = TextStyle(color = White,fontSize = 24.sp),
+            textAlign = TextAlign.Center
         )
             Box(
                 modifier = Modifier
                     .weight(1f)
                     .clickable { mainNav?.navRutinas() }
-                    .background(Blue)
+                    .background(Red)
+                    .fillMaxSize()
             ) {
                 Text(
                     text = "Rutinas",
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier
+                        .padding(16.dp),
                     style = TextStyle(color = White, fontSize = 18.sp)
                 )
             }
@@ -43,6 +48,7 @@ fun MainScreen(
                     .weight(1f)
                     .clickable { mainNav?.navNutricion() }
                     .background(Yellow)
+                    .fillMaxSize()
             ) {
                 Text(
                     text = "Nutrición",
@@ -54,7 +60,8 @@ fun MainScreen(
                 modifier = Modifier
                     .weight(1f)
                     .clickable { mainNav?.navCalendario() }
-                    .background(Red)
+                    .background(Blue)
+                    .fillMaxSize()
             ) {
                 Text(
                     text = "Calendario de ejercicios",
