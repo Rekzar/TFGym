@@ -1,12 +1,12 @@
 package com.example.tfgym.principal.ui.crearRutinas.ejercicios
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import android.util.Log
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -16,7 +16,9 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -30,8 +32,9 @@ fun EjerciciosScreen(){
     val ejercicios = remember { mutableStateListOf<Ejercicio>() }
 
     // Obtener la lista de ejercicios basada en el texto de búsqueda
-    val resultados = remember { mutableStateListOf<Ejercicio>() }
+    var resultados = remember { mutableStateListOf<Ejercicio>() }
 
+    var original  = true
 
 
     Column {
@@ -45,27 +48,30 @@ fun EjerciciosScreen(){
                 value = searchTextState.value,
                 onValueChange = {
                     searchTextState.value = it
+                    resultados.clear()
+                    obtenerEjercicios(searchTextState.value, resultados)
+
                 },
                 label = { Text("Buscar ejercicio") },
             )
 
             IconButton(
                 onClick = {
-                    obtenerEjercicios(searchTextState.value, resultados)
-                }
-            ) {
+                    searchTextState.value = ""
+                    resultados.clear()
+                }) {
                 Icon(
-                    Icons.Filled.Search,
-                    contentDescription = "Buscar",
-                    tint = Gray
+                    Icons.Filled.Close,
+                    contentDescription = "Borrar texto"
                 )
             }
+
         }
 
-            if (resultados.isNotEmpty()) {
+            if (resultados.isNotEmpty() && searchTextState.value != "") {
                 LazyColumn(modifier = Modifier.weight(1f)) {
                     items(resultados) { ejercicio ->
-                        EjercicioItem(ejercicio)
+                        ResultadoItem(ejercicio, ejercicios)
                     }
                 }
             } else {
@@ -79,15 +85,40 @@ fun EjerciciosScreen(){
         }
     }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun EjerciciosScreenPreview(){
     EjerciciosScreen()
 }
 
 @Composable
-fun EjercicioItem(ejercicio: Ejercicio) {
+fun ResultadoItem(ejercicio: Ejercicio, ejercicios: SnapshotStateList<Ejercicio>) {
     // Mostrar el nombre del ejercicio u otras propiedades según sea necesario
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+    ){
+        Row(){
+            Text(modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+                text = ejercicio.name)
+
+            OutlinedButton(onClick = {
+                ejercicios.add(ejercicio)
+
+            }) {
+                Text("Añadir ejercicio")
+            }
+        }
+
+    }
+}
+
+@Composable
+fun EjercicioItem(ejercicio: Ejercicio){
+
     Text(text = ejercicio.name)
 }
 
@@ -99,18 +130,27 @@ fun obtenerEjercicios(searchText: String, ejercicios: SnapshotStateList<Ejercici
 
     //Búsqueda de ejercicios
     ejerciciosCollection
+        .whereGreaterThanOrEqualTo("name", searchText.capitalize())
+        .whereLessThanOrEqualTo("name", searchText.capitalize() + "\uf8ff")
         .get()
         .addOnSuccessListener { querySnapshot ->
             for (document in querySnapshot.documents) {
+                Log.d("---", document.toString())
                 val ejercicio = document.toObject(Ejercicio::class.java)
-                if (ejercicio?.name == searchText){
-                    ejercicio?.let {
-                        ejercicios.add(it)
-                    }
+//                if (ejercicio?.name == searchText){
+                ejercicio?.let {
+                    ejercicios.add(it)
                 }
+//                }
             }
         }
         .addOnFailureListener { exception ->
             println("Error en la consulta: ${exception.message}")
+        }
+        .addOnCompleteListener {
+            println("Consulta completada:")
+        }
+        .addOnCanceledListener {
+            println("Consulta cancelada:")
         }
 }

@@ -5,5 +5,5 @@ class Ejercicio(
     val description: String,
     val url: String
 ) {
-
+    constructor(): this("","","")
 }
