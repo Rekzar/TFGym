@@ -14,14 +14,14 @@
         android:theme="@style/Theme.TFGym"
         tools:targetApi="31">
         <activity
-            android:name=".verRutinaActivity"
+            android:name=".principal.ui.rutinas.mostrarRutina.verRutinaActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="."
+            android:name=".principal.ui.rutinas.ejerciciosRutina.verEjercicio.VerEjercicioActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
