@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.example.tfgym.calendario.Calendario
 import com.example.tfgym.nutricion.Nutricion
-import com.example.tfgym.principal.ui.crearRutinas.CreacionRutinas
+import com.example.tfgym.principal.ui.rutinas.RutinasActivity
 
 class PrincipalActivity : AppCompatActivity(), MainNav {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +17,7 @@ class PrincipalActivity : AppCompatActivity(), MainNav {
     }
 
     override fun navRutinas() {
-        val intent = Intent(this, CreacionRutinas::class.java)
+        val intent = Intent(this, RutinasActivity::class.java)
         startActivity(intent)
     }
 

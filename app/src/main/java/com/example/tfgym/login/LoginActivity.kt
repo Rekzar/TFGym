@@ -78,5 +78,4 @@ class LoginActivity : AppCompatActivity(), LoginActions {
         finish()
     }
 
-
 }
