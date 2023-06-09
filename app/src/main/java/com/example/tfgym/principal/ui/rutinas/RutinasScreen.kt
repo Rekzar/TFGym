@@ -1,6 +1,6 @@
 package com.example.tfgym.principal.ui.rutinas
 
-import android.util.Log
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,16 +9,13 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotMutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.Ejercicio
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -27,6 +24,7 @@ import com.google.firebase.ktx.Firebase
 fun RutinasScreen(rutinasAction: RutinasAction?) {
     // Lista de rutinas
     val listaRutinas = remember { mutableStateListOf<Rutina>() }
+
 
     obtenerRutinas(listaRutinas)
 
@@ -51,7 +49,7 @@ fun RutinasScreen(rutinasAction: RutinasAction?) {
 
             // Lista de rutinas
             items(listaRutinas) { rutina ->
-                RutinaItem(rutina, rutinasAction)
+                RutinaItem(rutina, rutinasAction, listaRutinas)
             }
 
             // Espacio vacío al final de la lista
@@ -61,27 +59,38 @@ fun RutinasScreen(rutinasAction: RutinasAction?) {
 }
 
 @Composable
-fun RutinaItem(rutina: Rutina, rutinasAction: RutinasAction?){
+fun RutinaItem(rutina: Rutina, rutinasAction: RutinasAction?, listaRutinas: SnapshotStateList<Rutina>){
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(64.dp)
             .padding(8.dp)
             .background(LightGray)
     ) {
         Text(
             text = rutina.nombreRutina,
-            modifier = Modifier.align(Alignment.CenterStart)
+            modifier = Modifier
+                .align(Alignment.CenterStart)
                 .padding(16.dp)
         )
-        OutlinedButton(onClick = {
-            rutinasAction?.mostrarRutina()
-        },
-            modifier = Modifier.align(Alignment.CenterEnd)
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
                 .padding(end = 16.dp)
-                ) {
-            Text(text = "Ver rutina")
+        ){
+            OutlinedButton(onClick = {
+                rutinasAction?.mostrarRutina(rutina)
+            }) {
+                Text(text = "Ver rutina")
+            }
+            OutlinedButton(onClick = {
+                rutina.eliminarDocumento()
+                listaRutinas.remove(rutina)
+            }) {
+                Text(text = "Eliminar rutina")
+            }
         }
+
     }
 }
 
@@ -104,6 +113,7 @@ fun obtenerRutinas(listaRutinas: SnapshotStateList<Rutina>){
             for (document in querySnapshot.documents) {
                 val rutina = document.toObject(Rutina::class.java)
                 rutina?.let {
+                    it.documentoReferencia = document.reference
                     listaRutinas.add(it)
                 }
             }

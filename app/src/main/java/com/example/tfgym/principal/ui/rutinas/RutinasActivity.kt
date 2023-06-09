@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.EjerciciosActivity
+import com.example.tfgym.principal.ui.rutinas.mostrarRutina.verRutinaActivity
+
 
 class RutinasActivity : AppCompatActivity(), RutinasAction {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +21,11 @@ class RutinasActivity : AppCompatActivity(), RutinasAction {
         startActivity(intent)
     }
 
-    override fun mostrarRutina() {
-        TODO("Not yet implemented")
+    override fun mostrarRutina(rutina: Rutina) {
+        val intent = Intent(this, verRutinaActivity::class.java)
+        rutina.documentoReferencia = null
+        intent.putExtra("rutina", rutina)
+        startActivity(intent)
     }
+
 }

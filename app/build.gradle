@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.2'
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
+    implementation "io.coil-kt:coil-compose:1.4.0"
     //Material Design (temas)
     implementation 'com.google.android.material:material:1.4.0'
     //Inicio de sesión de Google

@@ -1,6 +1,5 @@
 package com.example.tfgym.principal.ui.rutinas.ejerciciosRutina
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,7 +7,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotMutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,8 +30,6 @@ fun EjerciciosScreen(ejercicioAction: EjercicioAction?){
     // Obtener la lista de ejercicios basada en el texto de búsqueda
     val resultados = remember { mutableStateListOf<Ejercicio>() }
 
-
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.End) {
@@ -46,7 +42,6 @@ fun EjerciciosScreen(ejercicioAction: EjercicioAction?){
                 value = searchTextState.value,
                 onValueChange = {
                     searchTextState.value = it
-                    resultados.clear()
                     obtenerEjercicios(searchTextState.value, resultados)
                 },
                 label = { Text("Buscar ejercicio") },
@@ -63,13 +58,12 @@ fun EjerciciosScreen(ejercicioAction: EjercicioAction?){
                     contentDescription = "Borrar texto"
                 )
             }
-
         }
             // Lista de resultados de búsqueda
             if (resultados.isNotEmpty() && searchTextState.value != "") {
                 LazyColumn(modifier = Modifier.weight(1f)) {
                     items(resultados) { ejercicio ->
-                        ResultadoItem(searchTextState, ejercicio, listaEjercicios, resultados )
+                        ResultadoItem(searchTextState, ejercicio, listaEjercicios, resultados, ejercicioAction)
                     }
                 }
             } else {
@@ -95,8 +89,8 @@ fun EjerciciosScreen(ejercicioAction: EjercicioAction?){
                 text = "Crear rutina",
                 textAlign = TextAlign.Center)
         }
-        }
     }
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -110,6 +104,7 @@ fun ResultadoItem(
     ejercicio: Ejercicio,
     listaEjercicios: SnapshotStateList<Ejercicio>,
     resultados: SnapshotStateList<Ejercicio>,
+    ejercicioAction: EjercicioAction?
 ) {
 
     Box(
@@ -122,16 +117,21 @@ fun ResultadoItem(
                 .weight(1f)
                 .fillMaxWidth(),
                 text = ejercicio.name)
-
-            OutlinedButton(onClick = {
-                listaEjercicios.add(ejercicio)
-                resultados.clear()
-                searchTextState.value = ""
-            }) {
-                Text(text = "Añadir ejercicio")
+            Column{
+                OutlinedButton(onClick = {
+                    ejercicioAction?.mostrarEjercicio(ejercicio)
+                }) {
+                    Text(text = "Ver ejercicio")
+                }
+                OutlinedButton(onClick = {
+                    listaEjercicios.add(ejercicio)
+                    resultados.clear()
+                    searchTextState.value = ""
+                }) {
+                    Text(text = "Añadir ejercicio")
+                }
             }
         }
-
     }
 }
 
@@ -165,7 +165,7 @@ fun EjercicioItem(ejercicio: Ejercicio,listaEjercicios: SnapshotStateList<Ejerci
     }
 }
 
-fun obtenerEjercicios(searchText: String, ejercicios: SnapshotStateList<Ejercicio>) {
+fun obtenerEjercicios(searchText: String, resultados: SnapshotStateList<Ejercicio>) {
 
     val db = Firebase.firestore
     val ejerciciosCollection = db.collection("Ejercicios")
@@ -176,11 +176,11 @@ fun obtenerEjercicios(searchText: String, ejercicios: SnapshotStateList<Ejercici
         .whereLessThanOrEqualTo("name", searchText.capitalize() + "\uf8ff")
         .get()
         .addOnSuccessListener { querySnapshot ->
+            resultados.clear()
             for (document in querySnapshot.documents) {
-                Log.d("---", document.toString())
                 val ejercicio = document.toObject(Ejercicio::class.java)
                 ejercicio?.let {
-                    ejercicios.add(it)
+                    resultados.add(it)
                 }
             }
         }
@@ -188,3 +188,4 @@ fun obtenerEjercicios(searchText: String, ejercicios: SnapshotStateList<Ejercici
             println("Error en la consulta: ${exception.message}")
         }
 }
+
