@@ -9,8 +9,9 @@ import com.example.tfgym.principal.ui.rutinas.Rutina
 import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.Ejercicio
 import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.EjercicioAction
 import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.verEjercicio.VerEjercicioActivity
+import com.example.tfgym.principal.ui.rutinas.mostrarRutina.añadirEjercicio.añadirEjerciciosActivity
 
-class verRutinaActivity : AppCompatActivity(), EjercicioAction {
+class verRutinaActivity : AppCompatActivity(), verRutinaAction {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val rutina = intent.getSerializableExtra("rutina") as? Rutina
@@ -27,7 +28,9 @@ class verRutinaActivity : AppCompatActivity(), EjercicioAction {
         startActivity(intent)
     }
 
-    override fun crearRutina(listaEjercicios: SnapshotStateList<Ejercicio>, nombreRutina: String) {
-        TODO("Not yet implemented")
+    override fun añadirEjercicio(rutina: Rutina) {
+        val intent = Intent(this, añadirEjerciciosActivity::class.java)
+        intent.putExtra("rutina", rutina)
+        startActivity(intent)
     }
 }

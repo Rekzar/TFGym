@@ -1,5 +1,7 @@
-package com.example.tfgym.principal.ui.rutinas.ejerciciosRutina
+package com.example.tfgym.principal.ui.rutinas.mostrarRutina.añadirEjercicio
 
+import com.example.tfgym.principal.ui.rutinas.Rutina
+import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.Ejercicio
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,18 +13,14 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun EjerciciosScreen(ejercicioAction: EjercicioAction?){
+fun añadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjerciciosAction?){
     // Estado para almacenar el texto de búsqueda
     val searchTextState = remember { mutableStateOf("") }
-
-    // Estado para almacenar el nombre de la rutina
-    val nombreRutina = remember { mutableStateOf("") }
 
     // Obtener la lista de ejercicios basada en el texto de búsqueda
     val listaEjercicios = remember { mutableStateListOf<Ejercicio>() }
@@ -59,43 +57,28 @@ fun EjerciciosScreen(ejercicioAction: EjercicioAction?){
                 )
             }
         }
-            // Lista de resultados de búsqueda
-            if (resultados.isNotEmpty() && searchTextState.value != "") {
-                LazyColumn(modifier = Modifier.weight(1f)) {
-                    items(resultados) { ejercicio ->
-                        ResultadoItem(searchTextState, ejercicio, listaEjercicios, resultados, ejercicioAction)
-                    }
-                }
-            } else {
-                // Mostrar la lista de ejercicios añadidos
-                LazyColumn(modifier = Modifier.weight(1f)) {
-                    items(listaEjercicios) { ejercicio ->
-                        EjercicioItem(ejercicio, listaEjercicios, ejercicioAction)
-                    }
+        // Lista de resultados de búsqueda
+        if (resultados.isNotEmpty() && searchTextState.value != "") {
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                items(resultados) { ejercicio ->
+                    ResultadoItem(searchTextState, ejercicio, listaEjercicios, resultados, añadirEjerciciosAction)
                 }
             }
-        TextField(
-            value = nombreRutina.value,
-            onValueChange = {
-                nombreRutina.value = it
-            },
-            label = {
-                Text(modifier = Modifier.fillMaxWidth(),
-                    text = "Nombre de la rutina")
-                    },
-        )
-        OutlinedButton(onClick = { ejercicioAction?.crearRutina(listaEjercicios, nombreRutina.value) }) {
+        } else {
+            // Mostrar la lista de ejercicios añadidos
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                items(listaEjercicios) { ejercicio ->
+                    EjercicioItem(ejercicio, listaEjercicios, añadirEjerciciosAction)
+                }
+            }
+        }
+
+        OutlinedButton(onClick = { rutina.añadirEjercicios(listaEjercicios) }) {
             Text(modifier = Modifier.fillMaxWidth(),
-                text = "Crear rutina",
+                text = "Añadir ejercicios",
                 textAlign = TextAlign.Center)
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EjerciciosScreenPreview(){
-    EjerciciosScreen(null)
 }
 
 @Composable
@@ -104,7 +87,7 @@ fun ResultadoItem(
     ejercicio: Ejercicio,
     listaEjercicios: SnapshotStateList<Ejercicio>,
     resultados: SnapshotStateList<Ejercicio>,
-    ejercicioAction: EjercicioAction?
+    añadirEjerciciosAction: añadirEjerciciosAction?
 ) {
 
     Box(
@@ -119,7 +102,7 @@ fun ResultadoItem(
                 text = ejercicio.name)
             Column{
                 OutlinedButton(onClick = {
-                    ejercicioAction?.mostrarEjercicio(ejercicio)
+                    añadirEjerciciosAction?.mostrarEjercicio(ejercicio)
                 }) {
                     Text(text = "Ver ejercicio")
                 }
@@ -136,7 +119,7 @@ fun ResultadoItem(
 }
 
 @Composable
-fun EjercicioItem(ejercicio: Ejercicio,listaEjercicios: SnapshotStateList<Ejercicio>,  ejercicioAction: EjercicioAction?){
+fun EjercicioItem(ejercicio: Ejercicio, listaEjercicios: SnapshotStateList<Ejercicio>, añadirEjerciciosAction: añadirEjerciciosAction?){
 
     Box(
         modifier = Modifier
@@ -151,10 +134,10 @@ fun EjercicioItem(ejercicio: Ejercicio,listaEjercicios: SnapshotStateList<Ejerci
 
             Column {
                 OutlinedButton(onClick = {
-                ejercicioAction?.mostrarEjercicio(ejercicio)
-            }) {
-                Text(text = "Ver ejercicio")
-            }
+                    añadirEjerciciosAction?.mostrarEjercicio(ejercicio)
+                }) {
+                    Text(text = "Ver ejercicio")
+                }
                 OutlinedButton(onClick = {
                     listaEjercicios.remove(ejercicio)
                 }) {

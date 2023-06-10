@@ -23,7 +23,6 @@ class RutinasActivity : AppCompatActivity(), RutinasAction {
 
     override fun mostrarRutina(rutina: Rutina) {
         val intent = Intent(this, verRutinaActivity::class.java)
-        rutina.documentoReferencia = null
         intent.putExtra("rutina", rutina)
         startActivity(intent)
     }

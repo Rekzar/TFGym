@@ -113,7 +113,7 @@ fun obtenerRutinas(listaRutinas: SnapshotStateList<Rutina>){
             for (document in querySnapshot.documents) {
                 val rutina = document.toObject(Rutina::class.java)
                 rutina?.let {
-                    it.documentoReferencia = document.reference
+                    it.pathDocumento = document.reference.path
                     listaRutinas.add(it)
                 }
             }
