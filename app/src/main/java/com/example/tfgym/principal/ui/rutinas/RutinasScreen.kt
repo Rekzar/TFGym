@@ -25,6 +25,8 @@ fun RutinasScreen(rutinasAction: RutinasAction?) {
     // Lista de rutinas
     val listaRutinas = remember { mutableStateListOf<Rutina>() }
 
+    //El remember guarda las rutinas anteriores asi que mejor limpiar la lista antes de obtener la nueva
+    listaRutinas.clear()
 
     obtenerRutinas(listaRutinas)
 

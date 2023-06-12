@@ -73,7 +73,10 @@ fun añadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjer
             }
         }
 
-        OutlinedButton(onClick = { rutina.añadirEjercicios(listaEjercicios) }) {
+        OutlinedButton(onClick = {
+            rutina.añadirEjercicios(listaEjercicios)
+            añadirEjerciciosAction?.volverRutina(rutina)
+        }) {
             Text(modifier = Modifier.fillMaxWidth(),
                 text = "Añadir ejercicios",
                 textAlign = TextAlign.Center)

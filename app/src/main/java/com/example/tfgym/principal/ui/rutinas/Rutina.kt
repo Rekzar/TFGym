@@ -41,17 +41,17 @@ class Rutina (
     fun añadirEjercicios(ejercicios: SnapshotStateList<Ejercicio>){
 
         for(ejercicio in ejercicios){
-            if (!listaEjercicios.contains(ejercicio)) {
+            if (listaEjercicios.none {it.name == ejercicio.name}) { //Se utilizan los nombres como id, pues los ejercicios son puestos a mano en la base de datos
                 listaEjercicios.add(ejercicio)
             }
         }
         FirebaseFirestore.getInstance().document(pathDocumento)
             .update("listaEjercicios", listaEjercicios)
             ?.addOnSuccessListener {
-                println("Ejercicio eliminado correctamente")
+                println("Ejercicios añadidos correctamente")
             }
             ?.addOnFailureListener { exception ->
-                println("Error al eliminar el ejercicio: ${exception.message}")
+                println("Error al añadir los ejercicios: ${exception.message}")
             }
     }
 }
