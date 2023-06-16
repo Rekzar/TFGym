@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import com.example.tfgym.calendario.Calendario
-import com.example.tfgym.nutricion.Nutricion
+import com.example.tfgym.calendario.CalendarioActivity
+import com.example.tfgym.nutricion.NutricionActivity
 import com.example.tfgym.principal.ui.rutinas.RutinasActivity
 
 class PrincipalActivity : AppCompatActivity(), MainNav {
@@ -22,12 +22,12 @@ class PrincipalActivity : AppCompatActivity(), MainNav {
     }
 
     override fun navNutricion() {
-        val intent = Intent(this, Nutricion::class.java)
+        val intent = Intent(this, NutricionActivity::class.java)
         startActivity(intent)
     }
 
     override fun navCalendario() {
-        val intent = Intent(this, Calendario::class.java)
+        val intent = Intent(this, CalendarioActivity::class.java)
         startActivity(intent)
     }
 }

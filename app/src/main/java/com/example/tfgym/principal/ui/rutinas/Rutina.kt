@@ -11,9 +11,10 @@ class Rutina (
     val listaEjercicios: MutableList<Ejercicio>,
     val nombreRutina: String,
     val idUsuario: String?,
-    var pathDocumento: String) : java.io.Serializable{
+    var pathDocumento: String,
+    val selectedDays: MutableList<String>) : java.io.Serializable{
 
-    constructor(): this(mutableListOf(),"",null, "")
+    constructor(): this(mutableListOf(),"",null, "", mutableListOf())
 
     fun eliminarDocumento() {
         FirebaseFirestore.getInstance().document(pathDocumento)

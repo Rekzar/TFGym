@@ -1,5 +1,6 @@
 package com.example.tfgym.principal.ui.rutinas.ejerciciosRutina
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,6 +31,22 @@ fun EjerciciosScreen(ejercicioAction: EjercicioAction?){
 
     // Obtener la lista de ejercicios basada en el texto de búsqueda
     val resultados = remember { mutableStateListOf<Ejercicio>() }
+
+    //Estado para almacenar los dias de la semana seleccionados
+    val selectedDays = remember { mutableStateListOf<String>() }
+
+    // Función para verificar si un día está seleccionado
+    fun isDaySelected(day: String): Boolean {
+        return selectedDays.contains(day)
+    }
+
+    fun cambiarDaySelection(day: String) {
+        if (isDaySelected(day)) {
+            selectedDays.remove(day)
+        } else {
+            selectedDays.add(day)
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -84,7 +102,30 @@ fun EjerciciosScreen(ejercicioAction: EjercicioAction?){
                     text = "Nombre de la rutina")
                     },
         )
-        OutlinedButton(onClick = { ejercicioAction?.crearRutina(listaEjercicios, nombreRutina.value) }) {
+        Spacer(modifier = Modifier.width(32.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val daysOfWeek = listOf("L", "M", "X", "J", "V", "S", "D")
+
+            daysOfWeek.forEach { day ->
+                Button(
+                    onClick = {
+                        cambiarDaySelection(day)
+                    },
+                    modifier = Modifier
+                        .width(48.dp)
+                        .height(48.dp)
+                        .background(if (isDaySelected(day)) Color.LightGray else Color.DarkGray),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)
+                ) {
+                    Text(text = day)
+                }
+            }
+        }
+        OutlinedButton(onClick = { ejercicioAction?.crearRutina(listaEjercicios, nombreRutina.value, selectedDays) }) {
             Text(modifier = Modifier.fillMaxWidth(),
                 text = "Crear rutina",
                 textAlign = TextAlign.Center)
@@ -188,4 +229,6 @@ fun obtenerEjercicios(searchText: String, resultados: SnapshotStateList<Ejercici
             println("Error en la consulta: ${exception.message}")
         }
 }
+
+
 

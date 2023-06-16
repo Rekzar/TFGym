@@ -26,7 +26,7 @@ class EjerciciosActivity : AppCompatActivity(), EjercicioAction {
         startActivity(intent)
     }
 
-    override fun crearRutina(listaEjercicios: SnapshotStateList<Ejercicio>, nombreRutina: String) {
+    override fun crearRutina(listaEjercicios: SnapshotStateList<Ejercicio>, nombreRutina: String, selectedDays: SnapshotStateList<String>) {
         val db = FirebaseFirestore.getInstance()
         val rutinasCollection = db.collection("Rutinas")
         val idUser = FirebaseAuth.getInstance().currentUser?.uid
@@ -37,7 +37,7 @@ class EjerciciosActivity : AppCompatActivity(), EjercicioAction {
             Toast.makeText(this, "La rutina debe tener un nombre", Toast.LENGTH_SHORT).show()
         } else {
             //Crear el objeto rutina y añadirlo a la base de datos de Firebase
-            val rutina = Rutina(listaEjercicios, nombreRutina, idUser, "")
+            val rutina = Rutina(listaEjercicios, nombreRutina, idUser, "", selectedDays)
             rutinasCollection.add(rutina)
             //Crear el intent para volver a la pantalla de Rutinas
             val intent = Intent(this, RutinasActivity::class.java)

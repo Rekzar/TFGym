@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.obtenerEjercicios
+
 
 @Composable
 fun añadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjerciciosAction?){
@@ -151,27 +151,4 @@ fun EjercicioItem(ejercicio: Ejercicio, listaEjercicios: SnapshotStateList<Ejerc
     }
 }
 
-fun obtenerEjercicios(searchText: String, resultados: SnapshotStateList<Ejercicio>) {
-
-    val db = Firebase.firestore
-    val ejerciciosCollection = db.collection("Ejercicios")
-
-    //Búsqueda de ejercicios
-    ejerciciosCollection
-        .whereGreaterThanOrEqualTo("name", searchText.capitalize())
-        .whereLessThanOrEqualTo("name", searchText.capitalize() + "\uf8ff")
-        .get()
-        .addOnSuccessListener { querySnapshot ->
-            resultados.clear()
-            for (document in querySnapshot.documents) {
-                val ejercicio = document.toObject(Ejercicio::class.java)
-                ejercicio?.let {
-                    resultados.add(it)
-                }
-            }
-        }
-        .addOnFailureListener { exception ->
-            println("Error en la consulta: ${exception.message}")
-        }
-}
 
