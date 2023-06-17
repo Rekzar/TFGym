@@ -15,7 +15,7 @@ class añadirEjerciciosActivity : AppCompatActivity(), añadirEjerciciosAction {
         val rutina = intent.getSerializableExtra("rutina") as? Rutina
         if(rutina != null){
             setContent{
-                añadirEjerciciosScreen(rutina, this)
+                AñadirEjerciciosScreen(rutina, this)
             }
         }
     }
@@ -26,7 +26,7 @@ class añadirEjerciciosActivity : AppCompatActivity(), añadirEjerciciosAction {
         startActivity(intent)
     }
 
-    override fun volverRutina(rutina: Rutina) {
+    override fun volverVerRutina(rutina: Rutina) {
         val intent = Intent(this, verRutinaActivity::class.java)
         intent.putExtra("rutina", rutina)
         startActivity(intent)

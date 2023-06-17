@@ -6,12 +6,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tfgym.nutricion.Alimento
@@ -27,39 +27,55 @@ fun NutricionScreen(nutricionAction: NutricionAction?) {
     // Obtener la lista de alimentos basada en el texto de búsqueda
     val listaAlimentos = remember { mutableStateListOf<Alimento>() }
 
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.End) {
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextField(// Barra de búsqueda
-                value = searchTextState.value,
-                onValueChange = {
-                    searchTextState.value = it
-                    obtenerAlimentos(searchTextState.value, listaAlimentos)
-                },
-                label = { Text("Buscar alimento") },
-                modifier = Modifier.weight(1f)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TFGym")},
+                navigationIcon = {
+                    IconButton(onClick = { nutricionAction?.volverPrincipal() }){
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
             )
-
-            IconButton(// Botón de borrar
-                onClick = {
-                    searchTextState.value = ""
-                    listaAlimentos.clear()
-                }) {
-                Icon(
-                    Icons.Filled.Close,
-                    contentDescription = "Borrar texto"
-                )
-            }
         }
-        // Lista de resultados de búsqueda
-        LazyColumn(modifier = Modifier.weight(1f)) {
-            items(listaAlimentos) { alimento ->
-                AlimentoItem(searchTextState, alimento, nutricionAction)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.End) {
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextField(// Barra de búsqueda
+                    value = searchTextState.value,
+                    onValueChange = {
+                        searchTextState.value = it
+                        obtenerAlimentos(searchTextState.value, listaAlimentos)
+                    },
+                    label = { Text("Buscar alimento") },
+                    modifier = Modifier.weight(1f)
+                )
+
+                IconButton(// Botón de borrar
+                    onClick = {
+                        searchTextState.value = ""
+                        listaAlimentos.clear()
+                    }) {
+                    Icon(
+                        Icons.Filled.Close,
+                        contentDescription = "Borrar texto"
+                    )
+                }
+            }
+            // Lista de resultados de búsqueda
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                items(listaAlimentos) { alimento ->
+                    AlimentoItem(searchTextState, alimento, nutricionAction)
+                }
             }
         }
     }

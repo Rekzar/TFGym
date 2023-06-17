@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
@@ -20,7 +22,22 @@ import androidx.compose.ui.tooling.preview.Preview
 fun MainScreen(
     mainNav: MainNav?
 ) {
-    Column {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TFGym")},
+                navigationIcon = {
+                    IconButton(onClick = { mainNav?.cerrarSesion() }){
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        }
+    ) {
+        Column {
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -62,6 +79,7 @@ fun MainScreen(
                 )
             }
         }
+    }
 }
 
 @Preview

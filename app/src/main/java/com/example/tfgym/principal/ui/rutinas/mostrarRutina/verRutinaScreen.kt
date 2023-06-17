@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -20,10 +21,10 @@ import com.example.tfgym.principal.ui.rutinas.Rutina
 import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.Ejercicio
 
 @Composable
-fun verRutinaScreen(rutina: Rutina, verRutinaAction: verRutinaAction?) {
+fun VerRutinaScreen(rutina: Rutina, verRutinaAction: verRutinaAction?, remitente: Boolean) {
 
     //Convertir la mutableList de rutina en una SnapshotStateList para poder actualizarla
-    var listaEjercicios = remember { mutableStateListOf(*rutina.listaEjercicios.toTypedArray()) }
+    val listaEjercicios = remember { mutableStateListOf(*rutina.listaEjercicios.toTypedArray()) }
 
     Scaffold(
         floatingActionButton = {
@@ -33,6 +34,25 @@ fun verRutinaScreen(rutina: Rutina, verRutinaAction: verRutinaAction?) {
                     verRutinaAction?.añadirEjercicio(rutina)
                 },
                 content = { Icon(Icons.Filled.Add, contentDescription = "Añadir ejercicios") }
+            )
+        },
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TFGym")},
+                navigationIcon = {
+                    IconButton(onClick = {
+                        if(remitente == true) {
+                            verRutinaAction?.volverRutina()
+                        } else {
+                            verRutinaAction?.volverCalendario()
+                        }
+                    }){
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
             )
         }
     ) {

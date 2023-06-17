@@ -9,6 +9,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import com.example.tfgym.calendario.añadirRutinaCalendario.añadirRutinaCalendarioActivity
+import com.example.tfgym.principal.ui.PrincipalActivity
 import com.example.tfgym.principal.ui.rutinas.Rutina
 import com.example.tfgym.principal.ui.rutinas.mostrarRutina.verRutinaActivity
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,7 +33,9 @@ class CalendarioActivity : AppCompatActivity(), CalendarioAction {
 
     override fun mostrarRutina(rutina: Rutina) {
         val intent = Intent(this, verRutinaActivity::class.java)
+        val remitente = false
         intent.putExtra("rutina", rutina)
+        intent.putExtra("remitente", remitente)
         startActivity(intent)
     }
 
@@ -40,12 +43,17 @@ class CalendarioActivity : AppCompatActivity(), CalendarioAction {
         rutina.selectedDays.remove(currentDay)
         FirebaseFirestore.getInstance().document(rutina.pathDocumento)
             .update("selectedDays", rutina.selectedDays)
-            ?.addOnSuccessListener {
+            .addOnSuccessListener {
                 println("Rutina eliminada correctamente")
             }
-            ?.addOnFailureListener { exception ->
+            .addOnFailureListener { exception ->
                 println("Error al eliminar la rutina: ${exception.message}")
             }
+    }
+
+    override fun volverPrincipal() {
+        val intent = Intent(this, PrincipalActivity::class.java)
+        startActivity(intent)
     }
 }
 

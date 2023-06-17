@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.example.tfgym.calendario.CalendarioActivity
-import com.example.tfgym.nutricion.Alimento
 import com.example.tfgym.principal.ui.rutinas.Rutina
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -15,7 +14,7 @@ class añadirRutinaCalendarioActivity : AppCompatActivity(), añadirRutinaCalend
         val currentDay = intent.getSerializableExtra("currentDay") as? String
         if(currentDay!=null){
             setContent {
-                añadirRutinaCalendarioScreen(this, currentDay)
+                AñadirRutinaCalendarioScreen(this, currentDay)
             }
         }
 
@@ -26,12 +25,16 @@ class añadirRutinaCalendarioActivity : AppCompatActivity(), añadirRutinaCalend
         rutina.selectedDays.add(currentDay)
         FirebaseFirestore.getInstance().document(rutina.pathDocumento)
             .update("selectedDays", rutina.selectedDays)
-            ?.addOnSuccessListener {
+            .addOnSuccessListener {
                 println("Rutina eliminada correctamente")
             }
-            ?.addOnFailureListener { exception ->
+            .addOnFailureListener { exception ->
                 println("Error al eliminar la rutina: ${exception.message}")
             }
+        volverCalendario()
+    }
+
+    override fun volverCalendario() {
         val intent = Intent(this, CalendarioActivity::class.java)
         startActivity(intent)
     }

@@ -4,8 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -17,23 +18,39 @@ import com.example.tfgym.principal.ui.rutinas.Rutina
 import com.example.tfgym.principal.ui.rutinas.obtenerRutinas
 
 @Composable
-fun añadirRutinaCalendarioScreen(añadirRutinaCalendarioAction: añadirRutinaCalendarioAction?, currentDay: String){
+fun AñadirRutinaCalendarioScreen(añadirRutinaCalendarioAction: añadirRutinaCalendarioAction?, currentDay: String){
 
     val listaRutinas = remember { mutableStateListOf<Rutina>() }
 
     obtenerRutinas(listaRutinas)
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TFGym")},
+                navigationIcon = {
+                    IconButton(onClick = { añadirRutinaCalendarioAction?.volverCalendario() }){
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        }
     ) {
-        // Espacio vacío en la parte superior
-        item { Spacer(modifier = Modifier.height(16.dp)) }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            // Espacio vacío en la parte superior
+            item { Spacer(modifier = Modifier.height(16.dp)) }
 
-        // Lista de rutinas
-        items(listaRutinas) { rutina ->
-            RutinaItem(rutina, añadirRutinaCalendarioAction, currentDay)
+            // Lista de rutinas
+            items(listaRutinas) { rutina ->
+                RutinaItem(rutina, añadirRutinaCalendarioAction, currentDay)
+            }
         }
     }
 }
@@ -49,13 +66,13 @@ fun RutinaItem(rutina: Rutina, añadirRutinaCalendarioAction: añadirRutinaCalen
         Text(
             text = rutina.nombreRutina,
             modifier = Modifier
-                .align(Alignment.CenterStart)
                 .padding(16.dp)
         )
         OutlinedButton(onClick = {
             añadirRutinaCalendarioAction?.añadirRutina(rutina, currentDay)
-        }) {
-
+        },
+        modifier = Modifier.align(Alignment.CenterEnd).padding(end = 8.dp)) {
+            Text("Añadir rutina")
         }
     }
 }

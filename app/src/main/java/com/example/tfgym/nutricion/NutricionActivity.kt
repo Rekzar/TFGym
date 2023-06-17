@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.example.tfgym.nutricion.verAlimento.AlimentoActivity
+import com.example.tfgym.principal.ui.PrincipalActivity
 import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.NutricionScreen
 
 class NutricionActivity : AppCompatActivity(),NutricionAction {
@@ -18,6 +19,11 @@ class NutricionActivity : AppCompatActivity(),NutricionAction {
     override fun verAlimento(alimento: Alimento){
         val intent = Intent(this, AlimentoActivity::class.java)
         intent.putExtra("alimento", alimento)
+        startActivity(intent)
+    }
+
+    override fun volverPrincipal() {
+        val intent = Intent(this, PrincipalActivity::class.java)
         startActivity(intent)
     }
 }

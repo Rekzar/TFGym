@@ -4,10 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import com.example.tfgym.calendario.CalendarioActivity
 import com.example.tfgym.principal.ui.rutinas.Rutina
+import com.example.tfgym.principal.ui.rutinas.RutinasActivity
 import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.Ejercicio
-import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.EjercicioAction
 import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.verEjercicio.VerEjercicioActivity
 import com.example.tfgym.principal.ui.rutinas.mostrarRutina.añadirEjercicio.añadirEjerciciosActivity
 
@@ -15,9 +15,10 @@ class verRutinaActivity : AppCompatActivity(), verRutinaAction {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val rutina = intent.getSerializableExtra("rutina") as? Rutina
+        val remitente = intent.getBooleanExtra("remitente", false)
         setContent {
             if(rutina != null) {
-                verRutinaScreen(rutina, this)
+                VerRutinaScreen(rutina, this, remitente)
             }
         }
     }
@@ -31,6 +32,16 @@ class verRutinaActivity : AppCompatActivity(), verRutinaAction {
     override fun añadirEjercicio(rutina: Rutina) {
         val intent = Intent(this, añadirEjerciciosActivity::class.java)
         intent.putExtra("rutina", rutina)
+        startActivity(intent)
+    }
+
+    override fun volverRutina(){
+        val intent = Intent(this, RutinasActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun volverCalendario() {
+        val intent = Intent(this, CalendarioActivity::class.java)
         startActivity(intent)
     }
 }

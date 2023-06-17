@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -39,6 +40,19 @@ fun RutinasScreen(rutinasAction: RutinasAction?) {
                 },
                 content = { Icon(Icons.Filled.Add, contentDescription = "Crear nueva rutina") }
             )
+        },
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TFGym")},
+                navigationIcon = {
+                    IconButton(onClick = { rutinasAction?.volverPrincipal() }){
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
         }
     ) {
         LazyColumn(
@@ -60,6 +74,7 @@ fun RutinasScreen(rutinasAction: RutinasAction?) {
     }
 }
 
+
 @Composable
 fun RutinaItem(rutina: Rutina, rutinasAction: RutinasAction?, listaRutinas: SnapshotStateList<Rutina>){
     Box(
@@ -74,7 +89,6 @@ fun RutinaItem(rutina: Rutina, rutinasAction: RutinasAction?, listaRutinas: Snap
                 .align(Alignment.CenterStart)
                 .padding(16.dp)
         )
-
         Column(
             modifier = Modifier
                 .align(Alignment.CenterEnd)

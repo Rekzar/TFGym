@@ -39,14 +39,14 @@ class EjerciciosActivity : AppCompatActivity(), EjercicioAction {
             //Crear el objeto rutina y añadirlo a la base de datos de Firebase
             val rutina = Rutina(listaEjercicios, nombreRutina, idUser, "", selectedDays)
             rutinasCollection.add(rutina)
-            //Crear el intent para volver a la pantalla de Rutinas
-            val intent = Intent(this, RutinasActivity::class.java)
-            startActivity(intent)
+            volverRutina()
         }
+    }
 
-
-
-
+    override fun volverRutina() {
+        //Crear el intent para volver a la pantalla de Rutinas
+        val intent = Intent(this, RutinasActivity::class.java)
+        startActivity(intent)
     }
 }
 

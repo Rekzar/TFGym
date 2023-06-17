@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -47,88 +48,102 @@ fun EjerciciosScreen(ejercicioAction: EjercicioAction?){
             selectedDays.add(day)
         }
     }
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.End) {
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextField(// Barra de búsqueda
-                value = searchTextState.value,
-                onValueChange = {
-                    searchTextState.value = it
-                    obtenerEjercicios(searchTextState.value, resultados)
-                },
-                label = { Text("Buscar ejercicio") },
-                modifier = Modifier.weight(1f)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TFGym")},
+                navigationIcon = {
+                    IconButton(onClick = { ejercicioAction?.volverRutina() }){
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
             )
-
-            IconButton(// Botón de borrar
-                onClick = {
-                    searchTextState.value = ""
-                    resultados.clear()
-                }) {
-                Icon(
-                    Icons.Filled.Close,
-                    contentDescription = "Borrar texto"
-                )
-            }
         }
-            // Lista de resultados de búsqueda
-            if (resultados.isNotEmpty() && searchTextState.value != "") {
-                LazyColumn(modifier = Modifier.weight(1f)) {
-                    items(resultados) { ejercicio ->
-                        ResultadoItem(searchTextState, ejercicio, listaEjercicios, resultados, ejercicioAction)
-                    }
-                }
-            } else {
-                // Mostrar la lista de ejercicios añadidos
-                LazyColumn(modifier = Modifier.weight(1f)) {
-                    items(listaEjercicios) { ejercicio ->
-                        EjercicioItem(ejercicio, listaEjercicios, ejercicioAction)
-                    }
-                }
-            }
-        TextField(
-            value = nombreRutina.value,
-            onValueChange = {
-                nombreRutina.value = it
-            },
-            label = {
-                Text(modifier = Modifier.fillMaxWidth(),
-                    text = "Nombre de la rutina")
-                    },
-        )
-        Spacer(modifier = Modifier.width(32.dp))
-        Row(
+    ) {
+        Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val daysOfWeek = listOf("L", "M", "X", "J", "V", "S", "D")
-
-            daysOfWeek.forEach { day ->
-                Button(
-                    onClick = {
-                        cambiarDaySelection(day)
+            horizontalAlignment = Alignment.End) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextField(// Barra de búsqueda
+                    value = searchTextState.value,
+                    onValueChange = {
+                        searchTextState.value = it
+                        obtenerEjercicios(searchTextState.value, resultados)
                     },
-                    modifier = Modifier
-                        .width(48.dp)
-                        .height(48.dp)
-                        .background(if (isDaySelected(day)) Color.LightGray else Color.DarkGray),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)
-                ) {
-                    Text(text = day)
+                    label = { Text("Buscar ejercicio") },
+                    modifier = Modifier.weight(1f)
+                )
+
+                IconButton(// Botón de borrar
+                    onClick = {
+                        searchTextState.value = ""
+                        resultados.clear()
+                    }) {
+                    Icon(
+                        Icons.Filled.Close,
+                        contentDescription = "Borrar texto"
+                    )
                 }
             }
-        }
-        OutlinedButton(onClick = { ejercicioAction?.crearRutina(listaEjercicios, nombreRutina.value, selectedDays) }) {
-            Text(modifier = Modifier.fillMaxWidth(),
-                text = "Crear rutina",
-                textAlign = TextAlign.Center)
+                // Lista de resultados de búsqueda
+                if (resultados.isNotEmpty() && searchTextState.value != "") {
+                    LazyColumn(modifier = Modifier.weight(1f)) {
+                        items(resultados) { ejercicio ->
+                            ResultadoItem(searchTextState, ejercicio, listaEjercicios, resultados, ejercicioAction)
+                        }
+                    }
+                } else {
+                    // Mostrar la lista de ejercicios añadidos
+                    LazyColumn(modifier = Modifier.weight(1f)) {
+                        items(listaEjercicios) { ejercicio ->
+                            EjercicioItem(ejercicio, listaEjercicios, ejercicioAction)
+                        }
+                    }
+                }
+            TextField(
+                value = nombreRutina.value,
+                onValueChange = {
+                    nombreRutina.value = it
+                },
+                label = {
+                    Text(modifier = Modifier.fillMaxWidth(),
+                        text = "Nombre de la rutina")
+                        },
+            )
+            Spacer(modifier = Modifier.width(32.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val daysOfWeek = listOf("L", "M", "X", "J", "V", "S", "D")
+
+                daysOfWeek.forEach { day ->
+                    Button(
+                        onClick = {
+                            cambiarDaySelection(day)
+                        },
+                        modifier = Modifier
+                            .width(48.dp)
+                            .height(48.dp)
+                            .background(if (isDaySelected(day)) Color.LightGray else Color.DarkGray),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)
+                    ) {
+                        Text(text = day)
+                    }
+                }
+            }
+            OutlinedButton(onClick = { ejercicioAction?.crearRutina(listaEjercicios, nombreRutina.value, selectedDays) }) {
+                Text(modifier = Modifier.fillMaxWidth(),
+                    text = "Crear rutina",
+                    textAlign = TextAlign.Center)
+            }
         }
     }
 }

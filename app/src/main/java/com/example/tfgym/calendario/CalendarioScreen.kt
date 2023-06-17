@@ -1,4 +1,3 @@
-import android.icu.util.Calendar
 import android.os.Build
 import android.widget.CalendarView
 import androidx.annotation.RequiresApi
@@ -6,9 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -35,14 +34,28 @@ fun CalendarioScreen(calendarioAction: CalendarioAction?){
 
     val rutinasDia = remember { mutableStateListOf<Rutina>() }
 
-    var currentDay = remember { mutableStateOf("") }
+    val currentDay = remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier.fillMaxWidth()
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TFGym")},
+                navigationIcon = {
+                    IconButton(onClick = { calendarioAction?.volverPrincipal() }){
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        }
     ) {
-        Box(modifier = Modifier.fillMaxWidth()){
-
-            AndroidView(factory = { CalendarView(it) }, update = {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AndroidView(modifier = Modifier.fillMaxWidth(), factory = { CalendarView(it) }, update = {
                 it.setOnDateChangeListener { calendarView, year, month, day ->
                     val selectedDate =
                         LocalDate.of(year, month + 1, day) // +1 porque en Java los meses empiezan en 0
@@ -54,30 +67,30 @@ fun CalendarioScreen(calendarioAction: CalendarioAction?){
                         }
                     }
                 }
+            })
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Espacio vacío en la parte superior
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+
+                // Lista de rutinas
+                items(rutinasDia) { rutina ->
+                    RutinaItem(rutina, calendarioAction, rutinasDia, currentDay.value)
+                }
+
+                item{ Button(onClick = {
+                    calendarioAction?.añadirRutina(currentDay.value)
+                }) {
+                    Text("Añadir nueva rutina")
+                }}
+
+                // Espacio vacío al final de la lista
+                item { Spacer(modifier = Modifier.height(16.dp)) }
             }
-            )
-        }
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            // Espacio vacío en la parte superior
-            item { Spacer(modifier = Modifier.height(16.dp)) }
-
-            // Lista de rutinas
-            items(rutinasDia) { rutina ->
-                RutinaItem(rutina, calendarioAction, rutinasDia, currentDay.value)
-            }
-
-            item{ Button(onClick = {
-                calendarioAction?.añadirRutina(currentDay.value)
-            }) {
-                Text("Añadir nueva rutina")
-            }}
-
-            // Espacio vacío al final de la lista
-            item { Spacer(modifier = Modifier.height(16.dp)) }
         }
     }
 }
@@ -96,7 +109,6 @@ fun RutinaItem(rutina: Rutina, calendarioAction: CalendarioAction?, rutinasDia: 
                 .align(Alignment.CenterStart)
                 .padding(16.dp)
         )
-
         Column(
             modifier = Modifier
                 .align(Alignment.CenterEnd)

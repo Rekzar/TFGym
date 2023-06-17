@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.tfgym.R
+import com.example.tfgym.login.LoginActivity
 import com.example.tfgym.principal.ui.PrincipalActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -69,5 +70,10 @@ class RegisterActivity : ComponentActivity(), RegisterActions {
         val intent= Intent(this, PrincipalActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun volverLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 }

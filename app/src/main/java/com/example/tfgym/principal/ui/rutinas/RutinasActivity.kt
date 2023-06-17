@@ -3,8 +3,8 @@ package com.example.tfgym.principal.ui.rutinas
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
+import com.example.tfgym.principal.ui.PrincipalActivity
 import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.EjerciciosActivity
 import com.example.tfgym.principal.ui.rutinas.mostrarRutina.verRutinaActivity
 
@@ -31,7 +31,14 @@ class RutinasActivity : AppCompatActivity(), RutinasAction {
 
     override fun mostrarRutina(rutina: Rutina) {
         val intent = Intent(this, verRutinaActivity::class.java)
+        val remitente = true
         intent.putExtra("rutina", rutina)
+        intent.putExtra("remitente", remitente)
+        startActivity(intent)
+    }
+
+    override fun volverPrincipal() {
+        val intent = Intent(this, PrincipalActivity::class.java)
         startActivity(intent)
     }
 

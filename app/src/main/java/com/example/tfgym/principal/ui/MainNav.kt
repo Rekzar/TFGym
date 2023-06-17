@@ -5,4 +5,5 @@ interface MainNav {
     fun navRutinas()
     fun navNutricion()
     fun navCalendario()
+    fun cerrarSesion()
 }

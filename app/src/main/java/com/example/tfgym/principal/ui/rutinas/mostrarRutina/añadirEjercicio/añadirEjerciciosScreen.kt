@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -18,7 +19,7 @@ import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.obtenerEjercicios
 
 
 @Composable
-fun añadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjerciciosAction?){
+fun AñadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjerciciosAction?){
     // Estado para almacenar el texto de búsqueda
     val searchTextState = remember { mutableStateOf("") }
 
@@ -28,58 +29,74 @@ fun añadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjer
     // Obtener la lista de ejercicios basada en el texto de búsqueda
     val resultados = remember { mutableStateListOf<Ejercicio>() }
 
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.End) {
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextField(// Barra de búsqueda
-                value = searchTextState.value,
-                onValueChange = {
-                    searchTextState.value = it
-                    obtenerEjercicios(searchTextState.value, resultados)
-                },
-                label = { Text("Buscar ejercicio") },
-                modifier = Modifier.weight(1f)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TFGym")},
+                navigationIcon = {
+                    IconButton(onClick = { añadirEjerciciosAction?.volverVerRutina(rutina) }){
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
             )
+        }
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.End) {
 
-            IconButton(// Botón de borrar
-                onClick = {
-                    searchTextState.value = ""
-                    resultados.clear()
-                }) {
-                Icon(
-                    Icons.Filled.Close,
-                    contentDescription = "Borrar texto"
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextField(// Barra de búsqueda
+                    value = searchTextState.value,
+                    onValueChange = {
+                        searchTextState.value = it
+                        obtenerEjercicios(searchTextState.value, resultados)
+                    },
+                    label = { Text("Buscar ejercicio") },
+                    modifier = Modifier.weight(1f)
                 )
-            }
-        }
-        // Lista de resultados de búsqueda
-        if (resultados.isNotEmpty() && searchTextState.value != "") {
-            LazyColumn(modifier = Modifier.weight(1f)) {
-                items(resultados) { ejercicio ->
-                    ResultadoItem(searchTextState, ejercicio, listaEjercicios, resultados, añadirEjerciciosAction)
-                }
-            }
-        } else {
-            // Mostrar la lista de ejercicios añadidos
-            LazyColumn(modifier = Modifier.weight(1f)) {
-                items(listaEjercicios) { ejercicio ->
-                    EjercicioItem(ejercicio, listaEjercicios, añadirEjerciciosAction)
-                }
-            }
-        }
 
-        OutlinedButton(onClick = {
-            rutina.añadirEjercicios(listaEjercicios)
-            añadirEjerciciosAction?.volverRutina(rutina)
-        }) {
-            Text(modifier = Modifier.fillMaxWidth(),
-                text = "Añadir ejercicios",
-                textAlign = TextAlign.Center)
+                IconButton(// Botón de borrar
+                    onClick = {
+                        searchTextState.value = ""
+                        resultados.clear()
+                    }) {
+                    Icon(
+                        Icons.Filled.Close,
+                        contentDescription = "Borrar texto"
+                    )
+                }
+            }
+            // Lista de resultados de búsqueda
+            if (resultados.isNotEmpty() && searchTextState.value != "") {
+                LazyColumn(modifier = Modifier.weight(1f)) {
+                    items(resultados) { ejercicio ->
+                        ResultadoItem(searchTextState, ejercicio, listaEjercicios, resultados, añadirEjerciciosAction)
+                    }
+                }
+            } else {
+                // Mostrar la lista de ejercicios añadidos
+                LazyColumn(modifier = Modifier.weight(1f)) {
+                    items(listaEjercicios) { ejercicio ->
+                        EjercicioItem(ejercicio, listaEjercicios, añadirEjerciciosAction)
+                    }
+                }
+            }
+
+            OutlinedButton(onClick = {
+                rutina.añadirEjercicios(listaEjercicios)
+                añadirEjerciciosAction?.volverVerRutina(rutina)
+            }) {
+                Text(modifier = Modifier.fillMaxWidth(),
+                    text = "Añadir ejercicios",
+                    textAlign = TextAlign.Center)
+            }
         }
     }
 }

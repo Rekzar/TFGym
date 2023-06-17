@@ -6,4 +6,5 @@ interface CalendarioAction {
     fun añadirRutina(currentDay: String)
     fun mostrarRutina(rutina: Rutina)
     fun eliminarRutina(rutina: Rutina, currentDay: String)
+    fun volverPrincipal()
 }
