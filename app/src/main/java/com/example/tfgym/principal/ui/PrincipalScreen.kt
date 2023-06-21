@@ -19,7 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MainScreen(
+fun PrincipalScreen(
     mainNav: MainNav?
 ) {
     Scaffold(
@@ -84,8 +84,8 @@ fun MainScreen(
 
 @Preview
 @Composable
-fun MainScreenPreview() {
-    MainScreen(mainNav = null)
+fun PrincipalScreenPreview() {
+    PrincipalScreen(mainNav = null)
 }
 
 

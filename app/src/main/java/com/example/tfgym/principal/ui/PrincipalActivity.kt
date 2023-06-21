@@ -14,7 +14,7 @@ class PrincipalActivity : AppCompatActivity(), MainNav {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent{
-            MainScreen(this)
+            PrincipalScreen(this)
         }
     }
 
