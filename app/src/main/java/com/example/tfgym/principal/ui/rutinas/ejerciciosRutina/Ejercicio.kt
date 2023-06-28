@@ -1,6 +1,6 @@
 package com.example.tfgym.principal.ui.rutinas.ejerciciosRutina
 
-class Ejercicio(
+data class Ejercicio(
     val name: String,
     val description: String,
     val url: String

@@ -56,14 +56,14 @@ fun LoginScreen(
                     label = { Text(text = "Contraseña") },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation =
-                    if (hidden) PasswordVisualTransformation() else VisualTransformation.None,//3
+                    if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
                     trailingIcon = {// 4
                         IconButton(onClick = { hidden = !hidden }) {
                             val vector = painterResource(//5
                                 if (hidden) R.drawable.ojo
                                 else R.drawable.invisible
                             )
-                            val description = if (hidden) "Ocultar contraseña" else "Revelar contraseña" //6
+                            val description = if (hidden) "Ocultar contraseña" else "Revelar contraseña"
                             Icon(painter = vector,
                                 contentDescription = description,
                                 modifier = Modifier.size(ButtonDefaults.IconSize))

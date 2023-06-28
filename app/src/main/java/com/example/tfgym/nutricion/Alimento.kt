@@ -1,6 +1,6 @@
 package com.example.tfgym.nutricion
 
-class Alimento(
+data class Alimento(
     val name: String,
     val calorias: Float,
     val grasa: Float,

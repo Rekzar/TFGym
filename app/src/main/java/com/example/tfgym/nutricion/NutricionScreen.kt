@@ -81,58 +81,58 @@ fun NutricionScreen(nutricionAction: NutricionAction?) {
     }
 }
 
-    @Preview(showBackground = true)
-    @Composable
-    fun NutricionScreenPreview() {
-        NutricionScreen(null)
-    }
+@Preview(showBackground = true)
+@Composable
+fun NutricionScreenPreview() {
+    NutricionScreen(null)
+}
 
-    @Composable
-    fun AlimentoItem(
-        searchTextState: MutableState<String>,
-        alimento: Alimento,
-        nutricionAction: NutricionAction?
-    ) {
+@Composable
+fun AlimentoItem(
+    searchTextState: MutableState<String>,
+    alimento: Alimento,
+    nutricionAction: NutricionAction?
+) {
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp)
-                .clickable {
-                    searchTextState.value = ""
-                    nutricionAction?.verAlimento(alimento)
-                }
-        ) {
-            Row() {
-                Text(modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                    text = alimento.name)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .clickable {
+                searchTextState.value = ""
+                nutricionAction?.verAlimento(alimento)
             }
+    ) {
+        Row() {
+            Text(modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+                text = alimento.name)
         }
     }
+}
 
-    fun obtenerAlimentos(searchText: String, listaAlimentos: SnapshotStateList<Alimento>) {
-        val db = Firebase.firestore
-        val alimentosCollection = db.collection("Alimentos")
+fun obtenerAlimentos(searchText: String, listaAlimentos: SnapshotStateList<Alimento>) {
+    val db = Firebase.firestore
+    val alimentosCollection = db.collection("Alimentos")
 
-        //Búsqueda de ejercicios
-        alimentosCollection
-            .whereGreaterThanOrEqualTo("name", searchText.capitalize())
-            .whereLessThanOrEqualTo("name", searchText.capitalize() + "\uf8ff")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                listaAlimentos.clear()
-                for (document in querySnapshot.documents) {
-                    val alimento = document.toObject(Alimento::class.java)
-                   alimento?.let{
-                       listaAlimentos.add(it)
-                   }
-                }
+    //Búsqueda de ejercicios
+    alimentosCollection
+        .whereGreaterThanOrEqualTo("name", searchText.capitalize())
+        .whereLessThanOrEqualTo("name", searchText.capitalize() + "\uf8ff")
+        .get()
+        .addOnSuccessListener { querySnapshot ->
+            listaAlimentos.clear()
+            for (document in querySnapshot.documents) {
+                val alimento = document.toObject(Alimento::class.java)
+               alimento?.let{
+                   listaAlimentos.add(it)
+               }
             }
-            .addOnFailureListener { exception ->
-                println("Error en la consulta: ${exception.message}")
-            }
-    }
+        }
+        .addOnFailureListener { exception ->
+            println("Error en la consulta: ${exception.message}")
+        }
+}
 
 

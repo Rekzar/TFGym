@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class Rutina (
+data class Rutina (
     val listaEjercicios: MutableList<Ejercicio>,
     val nombreRutina: String,
     val idUsuario: String?,
@@ -42,7 +42,7 @@ class Rutina (
     fun añadirEjercicios(ejercicios: SnapshotStateList<Ejercicio>){
 
         for(ejercicio in ejercicios){
-            if (listaEjercicios.none {it.name == ejercicio.name}) { //Se utilizan los nombres como id, pues los ejercicios son puestos a mano en la base de datos
+            if (listaEjercicios.none {it.name == ejercicio.name}) {
                 listaEjercicios.add(ejercicio)
             }
         }

@@ -58,24 +58,20 @@ class LoginActivity : AppCompatActivity(), LoginActions {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST_CODE)
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Inicio de sesión con Google exitoso, obtén la credencial de acceso
                 val account = task.getResult(ApiException::class.java)
                 val idToken = account?.idToken
-
                 // Autenticar en Firebase con la credencial de acceso de Google
                 val credential = GoogleAuthProvider.getCredential(idToken, null)
                 FirebaseAuth.getInstance().signInWithCredential(credential)
                     .addOnCompleteListener { authTask ->
                         if (authTask.isSuccessful) {
                             // Inicio de sesión en Firebase con Google exitoso
-                            val user = FirebaseAuth.getInstance().currentUser
                             val intent = Intent(this, PrincipalActivity::class.java)
                             startActivity(intent)
                         } else {
