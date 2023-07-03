@@ -139,7 +139,9 @@ fun ResultadoItem(
 }
 
 @Composable
-fun EjercicioItem(ejercicio: Ejercicio, listaEjercicios: SnapshotStateList<Ejercicio>, añadirEjerciciosAction: añadirEjerciciosAction?){
+fun EjercicioItem(ejercicio: Ejercicio,
+                  listaEjercicios: SnapshotStateList<Ejercicio>,
+                  añadirEjerciciosAction: añadirEjerciciosAction?){
 
     Box(
         modifier = Modifier

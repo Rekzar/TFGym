@@ -26,7 +26,11 @@ class EjerciciosActivity : AppCompatActivity(), EjercicioAction {
         startActivity(intent)
     }
 
-    override fun crearRutina(listaEjercicios: SnapshotStateList<Ejercicio>, nombreRutina: String, selectedDays: SnapshotStateList<String>) {
+    override fun crearRutina(
+        listaEjercicios: SnapshotStateList<Ejercicio>,
+        nombreRutina: String,
+        selectedDays: SnapshotStateList<String>
+    ) {
         val db = FirebaseFirestore.getInstance()
         val rutinasCollection = db.collection("Rutinas")
         val idUser = FirebaseAuth.getInstance().currentUser?.uid

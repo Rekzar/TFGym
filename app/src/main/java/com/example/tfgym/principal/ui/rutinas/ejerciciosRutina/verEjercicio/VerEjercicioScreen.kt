@@ -93,6 +93,6 @@ fun VerEjercicioScreen(ejercicio: Ejercicio){
 fun calcularRM(peso: String, repeticiones: String): String {
     val pesoResultado = peso.toDouble() / (1.0278 - 0.0278 * repeticiones.toDouble())
 
-    //Lo paso a float para que tenga pocos decimales, ya que las maquinas de gimnasio usan 1 o 2 decimales
+    //Se pasa a float para que tenga pocos decimales, ya que las maquinas de gimnasio usan 1 o 2 decimales
     return pesoResultado.toFloat().toString()
 }

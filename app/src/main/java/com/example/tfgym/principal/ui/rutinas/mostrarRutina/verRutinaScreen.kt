@@ -73,7 +73,12 @@ fun VerRutinaScreen(rutina: Rutina, verRutinaAction: verRutinaAction?, remitente
 
 
 @Composable
-fun EjercicioItem(ejercicio: Ejercicio, verRutinaAction: verRutinaAction?, rutina: Rutina, listaEjercicios: SnapshotStateList<Ejercicio>) {
+fun EjercicioItem(
+    ejercicio: Ejercicio,
+    verRutinaAction: verRutinaAction?,
+    rutina: Rutina,
+    listaEjercicios: SnapshotStateList<Ejercicio>
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(text = ejercicio.name, modifier = Modifier.weight(2f/3))
         Spacer(modifier = Modifier.width(16.dp))
