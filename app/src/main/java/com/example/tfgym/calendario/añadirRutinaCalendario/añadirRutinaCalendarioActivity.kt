@@ -20,7 +20,6 @@ class añadirRutinaCalendarioActivity : AppCompatActivity(), añadirRutinaCalend
 
     }
 
-    //Esta función elimina la rutina seleccionada de todos los dias de la semana que coincidan con el currentDay
     override fun añadirRutina(rutina: Rutina, currentDay: String) {
         rutina.selectedDays.add(currentDay)
         FirebaseFirestore.getInstance().document(rutina.pathDocumento)

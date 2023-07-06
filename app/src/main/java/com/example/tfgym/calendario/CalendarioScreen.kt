@@ -55,7 +55,10 @@ fun CalendarioScreen(calendarioAction: CalendarioAction?){
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AndroidView(modifier = Modifier.fillMaxWidth(), factory = { CalendarView(it) }, update = {
+            AndroidView(
+                modifier = Modifier.fillMaxWidth(),
+                factory = { CalendarView(it) },
+                update = {
                 it.setOnDateChangeListener { calendarView, year, month, day ->
                     val selectedDate =
                         LocalDate.of(year, month + 1, day) // +1 porque en Java los meses empiezan en 0
