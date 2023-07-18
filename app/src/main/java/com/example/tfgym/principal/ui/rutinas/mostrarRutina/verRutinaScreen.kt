@@ -31,7 +31,7 @@ fun VerRutinaScreen(rutina: Rutina, verRutinaAction: verRutinaAction?, remitente
             // Botón flotante para añadir ejercicios
             FloatingActionButton(
                 onClick = {
-                    verRutinaAction?.añadirEjercicio(rutina)
+                    verRutinaAction?.añadirEjercicio(rutina, remitente)
                 },
                 content = { Icon(Icons.Filled.Add, contentDescription = "Añadir ejercicios") }
             )
