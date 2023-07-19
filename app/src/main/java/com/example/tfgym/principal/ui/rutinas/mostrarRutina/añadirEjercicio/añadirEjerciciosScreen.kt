@@ -19,7 +19,7 @@ import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.obtenerEjercicios
 
 
 @Composable
-fun AñadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjerciciosAction?, remitente: Boolean){
+fun AñadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjerciciosAction?){
     // Estado para almacenar el texto de búsqueda
     val searchTextState = remember { mutableStateOf("") }
 
@@ -34,7 +34,7 @@ fun AñadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjer
             TopAppBar(
                 title = { Text(text = "TFGym")},
                 navigationIcon = {
-                    IconButton(onClick = { añadirEjerciciosAction?.volverVerRutina(rutina, remitente) }){
+                    IconButton(onClick = { añadirEjerciciosAction?.volverVerRutina(rutina) }){
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back"
@@ -91,7 +91,7 @@ fun AñadirEjerciciosScreen(rutina: Rutina, añadirEjerciciosAction: añadirEjer
 
             OutlinedButton(onClick = {
                 rutina.añadirEjercicios(listaEjercicios)
-                añadirEjerciciosAction?.volverVerRutina(rutina, remitente)
+                añadirEjerciciosAction?.volverVerRutina(rutina)
             }) {
                 Text(modifier = Modifier.fillMaxWidth(),
                     text = "Añadir ejercicios",

@@ -5,5 +5,5 @@ import com.example.tfgym.principal.ui.rutinas.ejerciciosRutina.Ejercicio
 
 interface añadirEjerciciosAction {
     fun mostrarEjercicio(ejercicio: Ejercicio)
-    fun volverVerRutina(rutina: Rutina, remitente: Boolean)
+    fun volverVerRutina(rutina: Rutina)
 }

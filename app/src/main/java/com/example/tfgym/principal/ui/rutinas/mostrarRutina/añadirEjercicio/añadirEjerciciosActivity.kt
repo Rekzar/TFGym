@@ -13,10 +13,9 @@ class añadirEjerciciosActivity : AppCompatActivity(), añadirEjerciciosAction {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val rutina = intent.getSerializableExtra("rutina") as? Rutina
-        val remitente = intent.getBooleanExtra("remitente", false)
         if(rutina != null){
             setContent{
-                AñadirEjerciciosScreen(rutina, this, remitente)
+                AñadirEjerciciosScreen(rutina, this)
             }
         }
     }
@@ -27,10 +26,9 @@ class añadirEjerciciosActivity : AppCompatActivity(), añadirEjerciciosAction {
         startActivity(intent)
     }
 
-    override fun volverVerRutina(rutina: Rutina, remitente: Boolean) {
+    override fun volverVerRutina(rutina: Rutina) {
         val intent = Intent(this, verRutinaActivity::class.java)
         intent.putExtra("rutina", rutina)
-        intent.putExtra("remitente", remitente)
         startActivity(intent)
     }
 }

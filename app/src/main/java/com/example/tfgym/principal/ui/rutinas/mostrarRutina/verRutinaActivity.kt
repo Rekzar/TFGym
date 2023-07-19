@@ -29,10 +29,9 @@ class verRutinaActivity : AppCompatActivity(), verRutinaAction {
         startActivity(intent)
     }
 
-    override fun añadirEjercicio(rutina: Rutina, remitente: Boolean) {
+    override fun añadirEjercicio(rutina: Rutina) {
         val intent = Intent(this, añadirEjerciciosActivity::class.java)
         intent.putExtra("rutina", rutina)
-        intent.putExtra("remitente", remitente)
         startActivity(intent)
     }
 
